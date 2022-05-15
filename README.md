@@ -1,4 +1,5 @@
-![ProjectLogo](logo.png)
+<img src="logo.png" alt="drawing" width="50%"/>
+
 ## About
 This is prototype version of educational project on C++ for enumeration combinations on square 2d-grid.
 
