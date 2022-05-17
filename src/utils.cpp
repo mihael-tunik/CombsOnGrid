@@ -34,17 +34,27 @@ vector <vector <int>> make_field(vector <pair<int, int>> &items, int N){
     return res;
 }
 
-void log_items(vector <pair<int, int>> &items, int id){
-     char file_name[20];     
+void log_items(vector <pair<int, int>> &items, int id, int format, int N){
+     char file_name[20];
      sprintf(file_name, "out_%iM.txt", id/1000000);
      FILE * f = fopen(file_name, "a+");
      
-     for(int i = 0; i < items.size(); ++i){
-        int x = items[i].first, y = items[i].second;
-        fprintf(f, "%i %i ", x, y);
+     if(format == 0){     
+         for(int i = 0; i < items.size(); ++i)
+             fprintf(f, "%i %i ", items[i].first, items[i].second);
      }
-     fprintf(f, "\n");
+     else{
+         vector <vector <int>> field = make_field(items, N);
+         fprintf(f, "Combination %i:\n", id);
+    
+         for(int i = 0; i < field.size(); ++i){
+             for(int j = 0; j < field[0].size(); ++j)
+                fprintf(f, "%i ", field[i][j]);
+             fprintf(f, "\n");
+         }
+     }     
      
+     fprintf(f, "\n");         
      fclose(f);
      return;
 }
@@ -55,10 +65,6 @@ void read_items_template(char *file_name, vector <pair<int, int>> &fixed_templat
              
      while(fscanf(f, "%i %i", &x, &y) != EOF)
           fixed_template.push_back(make_pair(x, y));
-    
-     //for(int i = 0; i < fixed_template.size(); ++i)
-     //    printf("%i %i ", fixed_template[i].first, fixed_template[i].second);
-          
      fclose(f);
      return;
 }

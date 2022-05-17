@@ -12,6 +12,13 @@ Combinations can be restricted by
 
 Can be used for building custom scenarios in C++ code (check out tests_OEIS() function for working example)
 
+## Motivation
+Arbitrary combinations on the grid can be computed directly by well-known algorithm for 1d-array
+```
+[1, ..., N^2]
+```
+In this implementation parameter **r** is included to algorithm core that can noticably improve performance.
+
 ## Requirements
 g++, CMake
 
@@ -27,7 +34,7 @@ make
 
 - Run:
 ```sh
- combs_on_grid /path_to_template
+ combs_on_grid [optional: /path_to_template]
 ```
 ## Examples
 On the project picture you can see **m=3** items on grid 

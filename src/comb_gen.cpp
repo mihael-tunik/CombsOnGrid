@@ -47,9 +47,40 @@ int CombGenerator::place_next(vector <pair<int, int>> &items, int &l)
     return 0;
 }
 
+void CombGenerator::process(vector <pair<int, int>> &items, set <unsigned long long> &h_values, unsigned long long *cnt)
+{
+    unsigned long long h_val;
+    
+    build(items);
+            
+    if(CC_condition(items, R_param)){
+               
+        h_val = unique_hash(items, N);                
+                                                   
+        if(h_values.count(h_val) == 0){
+            h_values.insert(h_val);
+
+            if(flag_unique)
+                log_items(items, *cnt, format_output, N);
+                                                             
+            if(flag_verbose && (*cnt) % 10000 == 0)
+                printf("%llu combinations processed\n", *cnt);
+        }            
+   }
+            
+   if(!flag_unique)
+       log_items(items, *cnt, format_output, N);
+                       
+   remove(items);
+   (*cnt)++;
+   
+   return;
+}
+
+
 unsigned long long CombGenerator::combs_on_grid(){
 
-    unsigned long long cnt = 0, h_val;
+    unsigned long long cnt = 0;
     vector <pair<int, int>> items;
     set <unsigned long long> h_values;   
             
@@ -61,9 +92,7 @@ unsigned long long CombGenerator::combs_on_grid(){
     if(items.size() != M)
         return 0;
     
-    h_val = unique_hash(items, N);                                         
-    h_values.insert(h_val);    
-    cnt++;
+    process(items, h_values, &cnt);
            
     while(items.size()){
                     
@@ -85,27 +114,8 @@ unsigned long long CombGenerator::combs_on_grid(){
              break;       
         }
         
-        if(items.size()){
-            
-            build(items);
-            
-            if(CC_condition(items, R_param)){
-                
-                h_val = unique_hash(items, N);                
-                                                   
-                if(h_values.count(h_val) == 0){
-                   h_values.insert(h_val);
-
-                   //log_items(items, cnt);
-                                                             
-                   //if(cnt % 10000 == 0)
-                   //   printf("%llu\n", cnt);
-                }            
-            }
-            
-            remove(items);            
-            cnt++;                       
-        }
+        if(items.size())
+            process(items, h_values, &cnt);
     }
     
     printf("OK: %llu, unique: %lu\n", cnt, h_values.size());

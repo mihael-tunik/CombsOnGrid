@@ -59,25 +59,31 @@ void tests_OEIS(){
 
 int main(int argc, char *argv[]){
     char *file_name;
-    
-    if(argc > 1)
-        file_name = argv[1];
-    else
-        return -1;
-       
-    int N = 32, M = 2, r_param = 2, R_param = 5;
+    int N = 10, M = 2, r_param = 2, R_param = 5;
     vector <pair <int, int>> fixed_template;
-        
-    read_items_template(file_name, fixed_template);
     
+    if(argc > 1){
+        file_name = argv[1];
+        read_items_template(file_name, fixed_template);
+    }
+            
     if(fixed_template.size() == 0)
-        printf("Template file is empty.\n");
+        printf("No template is provided.\n");
     
     CombGenerator gen = CombGenerator(N, M, r_param, R_param, fixed_template);
+    
+    /* optional */
+    gen.flag_unique = 0;           
+    gen.flag_verbose = 0;
+    gen.format_output = 1;
+    
+    printf("Output params:\nunique = %i\nverbose = %i\nformat = %i\n", 
+           gen.flag_unique, gen.flag_verbose, gen.format_output);
     
     gen.combs_on_grid();
                 
     return 0;
 }
+
 
 

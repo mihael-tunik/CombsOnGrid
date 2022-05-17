@@ -12,7 +12,9 @@ class CombGenerator{
     public:
         int N, M, r_param, R_param;
         vector <pair <int, int>> fixed_template;
-    
+
+        int flag_unique, flag_verbose, format_output;
+                
     CombGenerator(int _N, int _M, int _r_param, int _R_param, vector <pair <int, int>> _fixed_template){
         N = _N;
         M = _M;
@@ -20,6 +22,10 @@ class CombGenerator{
         R_param = _R_param;
        
         fixed_template = _fixed_template;
+        
+        flag_unique = 1;
+        flag_verbose = 1;
+        format_output = 0;
     }
     
     unsigned long long combs_on_grid();    
@@ -28,6 +34,11 @@ class CombGenerator{
     void remove(vector <pair<int, int>> &items);
     int min_dist(vector <pair<int, int>> &items, int i, int j);
     int place_next(vector <pair<int, int>> &items, int &l);
+    
+    void process( vector <pair<int, int>> &items, 
+                  set <unsigned long long> &h_values, 
+                  unsigned long long *cnt
+                );
 };
 
 #endif
