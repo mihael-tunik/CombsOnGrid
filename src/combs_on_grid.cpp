@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <algorithm>
+#include <string.h>
+#include <string>
 #include <vector>
 #include <stdlib.h>
 #include <bitset>
 #include <iostream>
 #include <set>
+
+#include <sys/stat.h>
 
 #include "comb_gen.h"
 #include "utils.h"
@@ -59,23 +63,43 @@ void tests_OEIS(){
 
 int main(int argc, char *argv[]){
     char *file_name;
-    int N = 10, M = 2, r_param = 2, R_param = 5;
+    int N = 23, M = 2, r_param = 3, R_param = 5;
     vector <pair <int, int>> fixed_template;
     
     if(argc > 1){
         file_name = argv[1];
         read_items_template(file_name, fixed_template);
+        
+        N = atoi(argv[2]);
+        M = atoi(argv[3]);
+        
+        r_param = atoi(argv[4]);
+        R_param = atoi(argv[5]);
+        
+        printf("(N, M, r, R) = %i %i %i %i\n", N, M, r_param, R_param);
     }
-            
+                
     if(fixed_template.size() == 0)
         printf("No template is provided.\n");
+    else{
+        printf("Template is provided:\n");
+        for(int i = 0; i < fixed_template.size(); ++i)
+            printf("%i %i\n", fixed_template[i].first, fixed_template[i].second);
+    }
     
     CombGenerator gen = CombGenerator(N, M, r_param, R_param, fixed_template);
+
+    gen.save_folder = string(argv[6]);
+        
+    if (mkdir(gen.save_folder.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == -1) {
+        gen.save_folder = string(".");
+        printf("Failed to create folder for experiment.\n");
+    }
     
     /* optional */
-    gen.flag_unique = 0;           
-    gen.flag_verbose = 0;
-    gen.format_output = 1;
+    gen.flag_unique = 1;           
+    gen.flag_verbose = 100000;
+    gen.format_output = 0;
     
     printf("Output params:\nunique = %i\nverbose = %i\nformat = %i\n", 
            gen.flag_unique, gen.flag_verbose, gen.format_output);

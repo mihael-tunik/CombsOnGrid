@@ -47,7 +47,10 @@ int CombGenerator::place_next(vector <pair<int, int>> &items, int &l)
     return 0;
 }
 
-void CombGenerator::process(vector <pair<int, int>> &items, set <unsigned long long> &h_values, unsigned long long *cnt)
+void CombGenerator::process(vector <pair<int, int>> &items,
+                            set <unsigned long long> &h_values,
+                            unsigned long long *cnt, 
+                            unsigned long long *saved_cnt)
 {
     unsigned long long h_val;
     
@@ -56,20 +59,27 @@ void CombGenerator::process(vector <pair<int, int>> &items, set <unsigned long l
     if(CC_condition(items, R_param)){
                
         h_val = unique_hash(items, N);                
-                                                   
+                             
+        /* val is unique */                      
         if(h_values.count(h_val) == 0){
             h_values.insert(h_val);
 
-            if(flag_unique)
-                log_items(items, *cnt, format_output, N);
+            if(flag_unique){
+                (*saved_cnt)++; /* or h_values.size()? */
+                log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose);
+            }
                                                              
-            if(flag_verbose && (*cnt) % 10000 == 0)
-                printf("%llu combinations processed\n", *cnt);
-        }            
+        }
+        
+        if(!flag_unique){
+            (*saved_cnt)++;
+            log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose);
+            
+            //if(flag_verbose && (*saved_cnt) % 10000 == 0)
+            //    printf("%llu combinations found, %\n", *cnt);
+        }         
    }
             
-   if(!flag_unique)
-       log_items(items, *cnt, format_output, N);
                        
    remove(items);
    (*cnt)++;
@@ -81,18 +91,22 @@ void CombGenerator::process(vector <pair<int, int>> &items, set <unsigned long l
 unsigned long long CombGenerator::combs_on_grid(){
 
     unsigned long long cnt = 0;
+    unsigned long long saved_cnt = 0;
+    
     vector <pair<int, int>> items;
     set <unsigned long long> h_values;   
             
     int l = 0;
     
+    //printf("%s\n", this->save_folder.c_str());
+        
     for(int i = 0; i < M; ++i)
         place_next(items, l);
         
     if(items.size() != M)
         return 0;
     
-    process(items, h_values, &cnt);
+    process(items, h_values, &cnt, &saved_cnt);
            
     while(items.size()){
                     
@@ -115,10 +129,9 @@ unsigned long long CombGenerator::combs_on_grid(){
         }
         
         if(items.size())
-            process(items, h_values, &cnt);
+            process(items, h_values, &cnt, &saved_cnt);
     }
     
     printf("OK: %llu, unique: %lu\n", cnt, h_values.size());
     return cnt;
 }
-

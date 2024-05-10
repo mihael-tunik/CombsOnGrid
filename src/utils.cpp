@@ -34,9 +34,11 @@ vector <vector <int>> make_field(vector <pair<int, int>> &items, int N){
     return res;
 }
 
-void log_items(vector <pair<int, int>> &items, int id, int format, int N){
-     char file_name[20];
-     sprintf(file_name, "out_%iM.txt", id/1000000);
+void log_items(vector <pair<int, int>> &items, int id, int format, int N, string &save_folder, int flag_verbose){
+     char file_name[32]; // ./test/out_1M.txt
+     //printf("%s\n", save_folder.c_str());
+     sprintf(file_name, "%s/out_%iM.txt", save_folder.c_str(), id/1000000);
+     //sprintf(file_name, "out_%iM.txt", id/1000000);
      FILE * f = fopen(file_name, "a+");
      
      if(format == 0){     
@@ -56,6 +58,10 @@ void log_items(vector <pair<int, int>> &items, int id, int format, int N){
      
      fprintf(f, "\n");         
      fclose(f);
+     
+     /* placed inside log_items() */
+     if( flag_verbose && ((id % flag_verbose) == 0) )
+         printf("%i combinations found\n", id);
      return;
 }
 
