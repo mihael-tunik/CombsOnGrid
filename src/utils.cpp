@@ -48,7 +48,7 @@ void log_items(vector <pair<int, int>> &items, int id, int format, int N, string
      //sprintf(file_name, "out_%iM.txt", id/1000000);
      FILE * f = fopen(file_name, "a+");
      
-     fprintf(f, "Combination %i:\n", id);
+     //fprintf(f, "Combination %i:\n", id);
      
      if(format == 0 || format == 1){     
          for(int i = 0; i < items.size(); ++i)
