@@ -99,7 +99,10 @@ int main(int argc, char *argv[]){
     /* optional */
     gen.flag_unique = 1;           
     gen.flag_verbose = 100000;
-    gen.format_output = 0;
+    gen.format_output = 1;    
+    gen.batch_size = 1000000;
+    gen.snapshot_every = 100000;
+    gen.flag_no_CC = 0;
     
     printf("Output params:\nunique = %i\nverbose = %i\nformat = %i\n", 
            gen.flag_unique, gen.flag_verbose, gen.format_output);

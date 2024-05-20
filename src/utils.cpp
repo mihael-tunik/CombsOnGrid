@@ -34,34 +34,45 @@ vector <vector <int>> make_field(vector <pair<int, int>> &items, int N){
     return res;
 }
 
-void log_items(vector <pair<int, int>> &items, int id, int format, int N, string &save_folder, int flag_verbose){
+void log_items(vector <pair<int, int>> &items, int id, int format, int N, string &save_folder, int flag_verbose, int batch_size){
      char file_name[32]; // ./test/out_1M.txt
      //printf("%s\n", save_folder.c_str());
-     sprintf(file_name, "%s/out_%iM.txt", save_folder.c_str(), id/1000000);
+     char units[] = {0, 0};
+     
+     if(batch_size == 1e3)
+         units[0] = 'K';
+     else if(batch_size == 1e6)
+         units[0] = 'M';     
+     
+     sprintf(file_name, "%s/out_%i%s.txt", save_folder.c_str(), id/batch_size, units);
      //sprintf(file_name, "out_%iM.txt", id/1000000);
      FILE * f = fopen(file_name, "a+");
      
-     if(format == 0){     
+     fprintf(f, "Combination %i:\n", id);
+     
+     if(format == 0 || format == 1){     
          for(int i = 0; i < items.size(); ++i)
              fprintf(f, "%i %i ", items[i].first, items[i].second);
+         fprintf(f, "\n");    
      }
-     else{
+     
+     if(format == 0 || format == 2){
          vector <vector <int>> field = make_field(items, N);
-         fprintf(f, "Combination %i:\n", id);
     
          for(int i = 0; i < field.size(); ++i){
              for(int j = 0; j < field[0].size(); ++j)
                 fprintf(f, "%i ", field[i][j]);
              fprintf(f, "\n");
          }
+         fprintf(f, "\n");    
      }     
      
-     fprintf(f, "\n");         
+     //fprintf(f, "\n");         
      fclose(f);
      
      /* placed inside log_items() */
-     if( flag_verbose && ((id % flag_verbose) == 0) )
-         printf("%i combinations found\n", id);
+     //if( flag_verbose && ((id % flag_verbose) == 0) )
+     //    printf("%i combinations found\n", id);
      return;
 }
 

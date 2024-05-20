@@ -1,14 +1,44 @@
 #include "hash.h"
 
+
+string uint128_to_str(__uint128_t num)
+{
+    const char* charmap = "0123456789";
+    string result;
+    
+    result.reserve( 40 );
+    __uint128_t v = num;
+
+    do {
+        result += charmap[ v % 10 ];
+        v /= 10;
+    } while ( v != 0 );
+    
+    std::reverse( result.begin(), result.end() );
+    return result;
+}
+
+/*string uint128_to_str(__uint128_t num) {
+    string str;
+    do {
+        int digit = num % 10;
+        str = to_string(digit) + str;
+        num = (num - digit) / 10;
+    } while (num != 0);
+    return str;
+}*/
+
 /* work with N^(2*M-1) */
-unsigned long long hash_field(vector <pair<int, int>> &items, int N){
+hash_t hash_field(vector <pair<int, int>> &items, int N){
    
-   vector <unsigned long long> powers;    
-   unsigned long long Npow = 1, hash = 0;
+   vector <hash_t> powers;    
+   hash_t Npow = 1, hash = 0, N_q = N;
    
    for(int i = 0; i < 2 * items.size(); ++i){
        powers.push_back(Npow);
-       Npow *= N;
+       //printf("[%s]\n", uint128_to_str(Npow).c_str());       
+       
+       Npow *= N_q;
    }
    
    int min_x = N+1, min_y = N+1;
@@ -27,8 +57,15 @@ unsigned long long hash_field(vector <pair<int, int>> &items, int N){
    //min_x = 0, min_y = 0;
    
    for(int i = 0; i < items.size(); ++i){
-       hash += (unsigned long long)(items[i].first - min_x) * powers[2*i];
-       hash += (unsigned long long)(items[i].second - min_y) * powers[2*i+1];
+       hash_t hc, vc; // horizontal and vertical coords
+       
+       hc = items[i].first - min_x;
+       vc = items[i].second - min_y;
+       
+       hash += hc * powers[2*i];
+       hash += vc * powers[2*i+1];
+       
+       //printf("%s %s --->\n", uint128_to_str(hc).c_str(), uint128_to_str(vc).c_str());
    }
    
    return hash;                
@@ -42,13 +79,17 @@ void rotate(vector <pair<int, int>> &items, int N)
     }
 }
 
-unsigned long long unique_hash(vector <pair<int, int>> &items, int N){
+hash_t unique_hash(vector <pair<int, int>> &items, int N){
 
     vector <pair<int, int>> items_;
     vector <pair<int, int>> items_tr;
     
-    vector <unsigned long long> hashes;
-    unsigned long long min_h;
+    vector <hash_t> hashes;
+    hash_t min_h;
+    
+    if(items.size() == 0){
+       printf("Oooopsy ops.\n");
+    }
        
     for(int i = 0; i < items.size(); ++i){
         int x = items[i].first, y = items[i].second;
@@ -56,7 +97,13 @@ unsigned long long unique_hash(vector <pair<int, int>> &items, int N){
         items_tr.push_back(make_pair(y, x));
         items_.push_back(make_pair(x, y));
     }
-        
+    
+    // A B  C A  D C  B D
+    // C D  D B  B A  A C
+    
+    // A C  B A  D B  C D
+    // B D  D C  C A  A B
+    
     hashes.push_back( hash_field(items_, N) );
     hashes.push_back( hash_field(items_tr, N) );
         
@@ -76,4 +123,5 @@ unsigned long long unique_hash(vector <pair<int, int>> &items, int N){
         
     return min_h;
 }
+
 
