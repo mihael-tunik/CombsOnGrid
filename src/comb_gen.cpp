@@ -65,16 +65,15 @@ hash_t CombGenerator::process(vector <pair<int, int>> &items,
             h_values.insert(h_val);
 
             if(flag_unique){
+                log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose, batch_size, pad);
                 (*saved_cnt)++; /* or h_values.size()? */
-                log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose, batch_size);
             }
                                                              
         }
         
         if(!flag_unique){
+            log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose, batch_size, pad);
             (*saved_cnt)++;
-            log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose, batch_size);
-            
             //if(flag_verbose && (*saved_cnt) % 10000 == 0)
             //    printf("%llu combinations found, %\n", *cnt);
         }         
@@ -92,6 +91,8 @@ void CombGenerator::make_snapshot(vector <pair<int, int>> &items,
                                   unsigned long long cnt,
                                   unsigned long long saved_cnt,
                                   hash_t h_val){
+    build(items);
+    
     printf("> Snapshot:\n");
     printf("%llu combinations found, %llu checked\n", saved_cnt, cnt);
     
@@ -99,10 +100,10 @@ void CombGenerator::make_snapshot(vector <pair<int, int>> &items,
     
     printf(" Items coords:\n");
     for(int i = 0; i < items.size(); ++i)
-        printf("%i %i ", items[i].first, items[i].second);
+        printf("%i %i ", items[i].first + pad, items[i].second + pad);
     printf("\n");
     
-    vector <vector <int>> field = make_field(items, N);
+    vector <vector <int>> field = make_field(items, N, pad);
     
     printf(" Placed on grid:\n");
     
@@ -112,7 +113,9 @@ void CombGenerator::make_snapshot(vector <pair<int, int>> &items,
         printf("\n");
     }
     printf("\n");
-         
+    
+    remove(items);
+    
     return;
 }
 
@@ -120,6 +123,7 @@ unsigned long long CombGenerator::combs_on_grid(){
 
     unsigned long long cnt = 0;
     unsigned long long saved_cnt = 0;
+    unsigned long long latest_cnt = 0;
     
     vector <pair<int, int>> items;
     set <hash_t> h_values;   
@@ -167,10 +171,9 @@ unsigned long long CombGenerator::combs_on_grid(){
             
             //printf("%s\n", uint128_to_str(h_val).c_str());
             
-            if(saved_cnt > 1 && (saved_cnt % snapshot_every) == 0){
-                 build(items);
-                 make_snapshot(items, h_values, cnt, saved_cnt, h_val);
-                 remove(items);
+            if(saved_cnt > 1 && (saved_cnt % snapshot_every) == 0 && latest_cnt != saved_cnt){
+                 make_snapshot(items, h_values, cnt, saved_cnt, h_val);                 
+                 latest_cnt = saved_cnt;
             }
         }
     }

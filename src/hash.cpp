@@ -18,6 +18,23 @@ string uint128_to_str(__uint128_t num)
     return result;
 }
 
+string uint128_to_uuid(__uint128_t num)
+{
+    const char* charmap = "0123456789ABCDEF";
+    string result;
+    int base_hex = 16;
+    
+    result.reserve( 32 );
+    __uint128_t v = num;
+
+    for(int i = 0; i < 32; ++i){
+        result += charmap[ v % base_hex ];
+        v /= base_hex;
+    }    
+    std::reverse( result.begin(), result.end() );
+    
+    return result;
+}
 /*string uint128_to_str(__uint128_t num) {
     string str;
     do {

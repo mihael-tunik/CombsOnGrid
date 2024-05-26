@@ -15,9 +15,9 @@ int rho(pair<int, int> a, pair<int, int> b){
     return (dx < dy) ? dy : dx;
 }
 
-vector <vector <int>> make_field(vector <pair<int, int>> &items, int N){
+vector <vector <int>> make_field(vector <pair<int, int>> &items, int N, int pad){
     vector <vector <int>> res;
-    int pad = 2;
+    //int pad = 2;
     
     res.resize(N + 2*pad);
         
@@ -34,7 +34,7 @@ vector <vector <int>> make_field(vector <pair<int, int>> &items, int N){
     return res;
 }
 
-void log_items(vector <pair<int, int>> &items, int id, int format, int N, string &save_folder, int flag_verbose, int batch_size){
+void log_items(vector <pair<int, int>> &items, int id, int format, int N, string &save_folder, int flag_verbose, int batch_size, int pad){
      char file_name[32]; // ./test/out_1M.txt
      //printf("%s\n", save_folder.c_str());
      char units[] = {0, 0};
@@ -52,12 +52,12 @@ void log_items(vector <pair<int, int>> &items, int id, int format, int N, string
      
      if(format == 0 || format == 1){     
          for(int i = 0; i < items.size(); ++i)
-             fprintf(f, "%i %i ", items[i].first, items[i].second);
+             fprintf(f, "%i %i ", items[i].first + pad, items[i].second + pad);
          fprintf(f, "\n");    
      }
      
      if(format == 0 || format == 2){
-         vector <vector <int>> field = make_field(items, N);
+         vector <vector <int>> field = make_field(items, N, pad);
     
          for(int i = 0; i < field.size(); ++i){
              for(int j = 0; j < field[0].size(); ++j)

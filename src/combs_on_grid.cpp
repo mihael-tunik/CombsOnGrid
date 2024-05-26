@@ -65,6 +65,8 @@ void tests_OEIS(){
 int main(int argc, char *argv[]){
     char *file_name;
     int N = 23, M = 2, r_param = 3, R_param = 5;
+    int flag_format_output = 1, flag_snapshot_every = 100000, flag_pad = 0;
+    
     vector <pair <int, int>> fixed_template;
     
     if(argc > 1){
@@ -78,6 +80,9 @@ int main(int argc, char *argv[]){
         R_param = atoi(argv[5]);
         
         printf("(N, M, r, R) = %i %i %i %i\n", N, M, r_param, R_param);
+        
+        //flag_format_output = atoi(argv[7]);
+        flag_pad = atoi(argv[7]);
     }
                 
     if(fixed_template.size() == 0)
@@ -98,12 +103,13 @@ int main(int argc, char *argv[]){
     }
     
     /* optional */
-    gen.flag_unique = 1;           
-    gen.flag_verbose = 100000;
-    gen.format_output = 0;    
-    gen.batch_size = 1000000;
-    gen.snapshot_every = 100000;
-    gen.flag_no_CC = 0;
+    gen.flag_unique    = 1;           
+    gen.flag_verbose   = 100000;
+    gen.format_output  = flag_format_output;    
+    gen.batch_size     = 1000000;
+    gen.snapshot_every = flag_snapshot_every;
+    gen.flag_no_CC     = 0;
+    gen.pad            = flag_pad;
     
     printf("Output params:\nunique = %i\nverbose = %i\nformat = %i\n", 
            gen.flag_unique, gen.flag_verbose, gen.format_output);
