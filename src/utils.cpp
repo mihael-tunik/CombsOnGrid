@@ -35,7 +35,7 @@ vector <vector <int>> make_field(vector <pair<int, int>> &items, int N, int pad)
 }
 
 void log_items(vector <pair<int, int>> &items, int id, int format, int N, string &save_folder, int flag_verbose, int batch_size, int pad){
-     char file_name[32]; // ./test/out_1M.txt
+     char file_name[128]; // ./test/out_1M.txt
      //printf("%s\n", save_folder.c_str());
      char units[] = {0, 0};
      

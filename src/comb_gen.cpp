@@ -56,7 +56,7 @@ hash_t CombGenerator::process(vector <pair<int, int>> &items,
     
     build(items);
             
-    if(CC_condition(items, R_param) or flag_no_CC){
+    if(flag_no_CC || CC_condition(items, R_param)){
                
         h_val = unique_hash(items, N);                
                              
@@ -69,9 +69,10 @@ hash_t CombGenerator::process(vector <pair<int, int>> &items,
                 (*saved_cnt)++; /* or h_values.size()? */
             }
                                                              
-        }
         
+        }
         if(!flag_unique){
+            
             log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose, batch_size, pad);
             (*saved_cnt)++;
             //if(flag_verbose && (*saved_cnt) % 10000 == 0)
@@ -178,6 +179,6 @@ unsigned long long CombGenerator::combs_on_grid(){
         }
     }
     
-    printf("OK: %llu, unique: %lu\n", cnt, h_values.size());
+    printf("OK: %llu, found: %llu, unique: %lu\n", cnt, saved_cnt, h_values.size());
     return cnt;
 }

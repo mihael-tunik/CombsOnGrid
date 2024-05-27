@@ -17,6 +17,7 @@ class CombGenerator{
 
         int flag_unique, flag_verbose, format_output, flag_no_CC;
         int batch_size, snapshot_every;
+        int pad = 2;
         
         string save_folder;
                  
@@ -31,11 +32,10 @@ class CombGenerator{
         flag_unique = 1;
         flag_verbose = 1000;
         format_output = 0;
-        flag_no_CC = 1;
+        flag_no_CC = 0;
         
         batch_size = 1000000;   
-        snapshot_every = 100000;
-        
+        snapshot_every = 100000;        
     }
     
     unsigned long long combs_on_grid();    

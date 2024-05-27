@@ -32,8 +32,9 @@ string uint128_to_uuid(__uint128_t num)
         v /= base_hex;
     }    
     std::reverse( result.begin(), result.end() );
+    string middle = result.substr(8, 4) +  string("-") + result.substr(12, 4) + string("-") + result.substr(16, 4); 
     
-    return result;
+    return result.substr(0, 8) + string("-") + middle + string("-") + result.substr(20, 12);
 }
 /*string uint128_to_str(__uint128_t num) {
     string str;
