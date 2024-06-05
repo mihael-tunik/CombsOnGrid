@@ -87,6 +87,22 @@ hash_t CombGenerator::process(vector <pair<int, int>> &items,
    return h_val;
 }
 
+hash_t CombGenerator::process_fast(vector <pair<int, int>> &items,
+                            unsigned long long *cnt, 
+                            unsigned long long *saved_cnt)
+{    
+   build(items);
+            
+   if(CC_condition(items, R_param)){              
+       log_items(items, *saved_cnt, format_output, N, save_folder, flag_verbose, batch_size, pad);
+       (*saved_cnt)++;            
+   }                       
+   remove(items);
+   (*cnt)++;
+   
+   return 0;
+}
+
 void CombGenerator::make_snapshot(vector <pair<int, int>> &items, 
                                   set <hash_t> &h_values, 
                                   unsigned long long cnt,
@@ -168,6 +184,7 @@ unsigned long long CombGenerator::combs_on_grid(){
         }
         
         if(items.size()){
+            //hash_t h_val = process_fast(items, &cnt, &saved_cnt);
             hash_t h_val = process(items, h_values, &cnt, &saved_cnt);
             
             //printf("%s\n", uint128_to_str(h_val).c_str());

@@ -17,7 +17,7 @@ class CombGenerator{
 
         int flag_unique, flag_verbose, format_output, flag_no_CC;
         int batch_size, snapshot_every;
-        int pad = 2;
+        int pad = 0;
         
         string save_folder;
                  
@@ -47,6 +47,10 @@ class CombGenerator{
     
     hash_t process(vector <pair<int, int>> &items,
                  set <hash_t> &h_values,
+                 unsigned long long *cnt, 
+                 unsigned long long *saved_cnt);
+                 
+    hash_t process_fast(vector <pair<int, int>> &items,
                  unsigned long long *cnt, 
                  unsigned long long *saved_cnt);
                 

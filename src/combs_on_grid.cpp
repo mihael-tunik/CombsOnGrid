@@ -103,8 +103,8 @@ int main(int argc, char *argv[]){
     }
     
     /* optional */
-    gen.flag_unique    = 0;           
-    gen.flag_verbose   = 100000;
+    gen.flag_unique    = 1;           
+    gen.flag_verbose   = 100000; /* */
     gen.format_output  = flag_format_output;    
     gen.batch_size     = 2000000000;
     gen.snapshot_every = flag_snapshot_every;
