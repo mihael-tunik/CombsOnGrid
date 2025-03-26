@@ -1,4 +1,8 @@
-### How much combinations from k = 5 elements are possible in cube 10x8x8 with minimal distance allowed r = 7?
+### MultidimensionalBoxIterator
+Generalized version of CombsOnGrid without hashing, connectivity and templates.
+
+### Example 
+> How much combinations from k = 5 elements are possible on 10x8x8 grid with minimal Chebyshev distance between any pair r = 7?
 ```cpp
     vector <int> dims = {10, 8, 8};
     int r = 7, k = 5;
