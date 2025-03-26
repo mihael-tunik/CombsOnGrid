@@ -12,6 +12,8 @@ Combinations can be restricted by
 
 Can be used for building custom scenarios in C++ code (check out tests_OEIS() function for working example)
 
+*Update 26/03/25:* core algorithm can be generalized multidimensional boxes (see directory ./new for details).
+
 ## Motivation
 Arbitrary combinations on the grid can be computed directly by well-known algorithm for 1d-array
 ```
