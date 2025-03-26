@@ -153,12 +153,12 @@ int main(void){
     
     printf("Ready in %lf s.\n", chrono::duration<double, milli>(stop-start).count()/1000);
 
-    start = chrono::high_resolution_clock::now();
+    /*start = chrono::high_resolution_clock::now();
     ull cnt = iterate_combs(m.p_dims[0], k); 
     stop = chrono::high_resolution_clock::now();
     
     printf("Ready in %lf s.\n", chrono::duration<double, milli>(stop-start).count()/1000);
-
-    cout << ans << " " << cnt << endl;
+    cout << ans << " " << cnt << endl;*/
+    cout << ans << endl;
     return 0;
 }

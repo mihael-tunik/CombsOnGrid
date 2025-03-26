@@ -6,5 +6,6 @@
     m.run(k); 
 ```
 
-Test runs in 5s on my laptop and combination space can be just iterated (without any checks and counting, $C_{640}^{5} ~ 0.8 \cdot 10^12$) in ~320s 
-which is decent lower bound for naive solution.
+This test runs in 5s on my laptop.
+For comparison combination space can be just iterated (without minimal distance counting and checks, $C_{640}^{5} \sim 0.8 \cdot 10^{12} $) in ~320s 
+which is decent lower bound for any naive solution.
